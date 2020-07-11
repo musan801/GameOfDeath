@@ -2,7 +2,8 @@
 #include <iostream>
 #include "WorkingHuman.h"
 #include "NonWorkingHuman.h"
-
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 
@@ -26,37 +27,62 @@ void Habitat::Initialize(int n_temp, int h_temp, int o_temp)
     O_num = o_temp;
     Grid2D = new char* [n_temp];
     Offices = new Office[O_num];
-
-    while (h_temp != 0) {
-        if (o_temp != 0) {
-            WorkingHuman* obj = new WorkingHuman();
-            Humans.push_back(obj);
-            o_temp--;
-            h_temp--;
-        }
-        else {
-            NonWorkingHuman* obj = new NonWorkingHuman();
-            Humans.push_back(obj);
-            h_temp--;
-        }
-    }
     for (int i = 0; i < n_temp; ++i)
     {
         Grid2D[i] = new char[n_temp];
-    }
-    /*
-    // Initializing with random values
-    char[3] = { ' ','H','O'};
-    for (int i = 0; i < N_size; i++) {
-        for (int j = 0; j < N_size; j++)
+        for (int j = 0; j < n_temp; j++)
         {
-
-
+            Grid2D[i][j] = '-';
         }
+
+    }
+    // This loop Spawns Humans and Offices and also maps them on the Grid
+    srand((unsigned)time(NULL));
+    while (h_temp != 0) {
+      //  DisplayHabitat();
+        cout << endl;
+            if (o_temp != 0) 
+            {
+                WorkingHuman* obj = new WorkingHuman();
+                Humans.push_back(obj);
+               // Offices
+                o_temp--;
+                h_temp--;
+                FindUninitialized:
+                int temp_i =  (rand() % (n_temp ));
+                int temp_j =  (rand() % (n_temp ));
+                if (Grid2D[temp_i][temp_j] == '-')
+                {
+                    obj->setInitialPos(Point(temp_i, temp_j));
+                    Grid2D[temp_i][temp_j] = 'W';
+                }
+                else
+                    goto FindUninitialized;
+            }
+            else 
+            {
+                NonWorkingHuman* obj = new NonWorkingHuman();
+                Humans.push_back(obj);
+                h_temp--;
+                FindUninitialized1:
+                int temp_i =  (rand() % (n_temp ));
+                int temp_j =  (rand() % (n_temp ));
+                //cout << temp_i << "." << temp_j << endl;
+                if (Grid2D[temp_i][temp_j] == '-')
+                {
+                    obj->setInitialPos(Point(temp_i, temp_j));
+                    Grid2D[temp_i][temp_j] = 'H';
+                }
+                else 
+                    goto  FindUninitialized1;
+            }
+        }
+    /*for (int i = 0; i < Humans.size(); i++) {
+         cout<<Humans.at(i)->getCurrentPos().getX()<< ' ';
+         cout << Humans.at(i)->getCurrentPos().getX() << ' ';
+         cout << endl;
     }
     */
-
-
 }
 
 void Habitat::DisplayHabitat()

@@ -4,6 +4,5 @@
 class WorkingHuman :
     public Human
 {
-    Office MyOffice;
-
+    Office* MyOffice;// whnne init 
 };

@@ -1,6 +1,13 @@
 #include "Office.h"
 
 
+Office::Office()
+{
+    Name = "Office";
+    Pos.setX(0);
+    Pos.setY(0);
+}
+
 string Office::getName() const
 {
     return Name;

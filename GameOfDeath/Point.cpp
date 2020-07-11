@@ -1,7 +1,16 @@
 #include "Point.h"
 
 
+Point::Point()
+{
+    X = 0;
+    Y = 0;
+}
 
+Point::Point(int a, int b) {
+    X = a;
+    Y = b;
+}
 
 int Point::getX() const
 {

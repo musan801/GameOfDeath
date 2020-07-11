@@ -11,6 +11,8 @@ public:
 
 
 public:
+	Point();
+	Point(int a, int b);
 	int getX() const;
 	void setX(int X);
 

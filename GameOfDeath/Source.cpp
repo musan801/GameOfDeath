@@ -3,10 +3,9 @@
 
 using namespace std;
 int  main() {
-	cout << "FIRST COMMIT" << endl;
+	cout << "Second Commit" << endl;
 	Habitat MyHabitat;
-	MyHabitat.Initialize(10, 10, 10);
+	MyHabitat.Initialize(10,11,5);
 	MyHabitat.DisplayHabitat();
-
 	return 0;
 }

@@ -1,9 +1,2 @@
-﻿  Habitat.cpp
-  Human.cpp
-  NonWorkingHuman.cpp
-  Office.cpp
-  Point.cpp
-  Source.cpp
-  WorkingHuman.cpp
-  Generating Code...
+﻿  Source.cpp
   GameOfDeath.vcxproj -> D:\Afiniti\GameOfDeath\Debug\GameOfDeath.exe

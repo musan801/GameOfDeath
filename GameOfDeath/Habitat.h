@@ -13,8 +13,8 @@ class Habitat {
     char** Grid2D; //Main Grid environment 
     vector<Human*>Humans; // vector of humans
     Office* Offices; // list of offices
-
-
+    
+    
 public:
     Habitat();
     Habitat(int n_temp, int h_temp, int o_temp);

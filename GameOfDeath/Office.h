@@ -10,6 +10,7 @@ class Office
     Point Pos; //Current  location in the habitat
 
 public:
+    Office();
     string getName() const;
     void setName(string Name);
 
