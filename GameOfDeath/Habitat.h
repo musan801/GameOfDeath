@@ -65,6 +65,10 @@ public:
     vector<Human*> getHumans() const;
     void setHumans(vector<Human*> Humans);
 
+    bool InContact(Human obj);
+
+    //bool InContact(Point obj);
+
  
     
 

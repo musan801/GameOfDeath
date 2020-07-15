@@ -40,7 +40,6 @@ void Habitat::Initialize(int n_temp, int h_temp, int o_temp)
             Grid2D[i][j] = '-';
         }
     }
-
     // This loop Spawns Humans and Offices and also maps them on the Grid
     srand((unsigned)time(NULL));
     while (h_temp != 0) {
@@ -60,7 +59,6 @@ void Habitat::Initialize(int n_temp, int h_temp, int o_temp)
                     int off_j = (rand() % (n_temp));
                     if (Grid2D[off_i][off_j] == '-')
                     {
-                        //cout << temp_i << "testing";
                         Grid2D[temp_i][temp_j] = 'W';
                         Grid2D[off_i][off_j] = 'O';
                         Offices[o_temp].setPos(Point(off_i, off_j));
@@ -128,34 +126,33 @@ void Habitat::Generations(int a)
         for (int i = 0; i < O_num; i++)
         {
 
+            Point Position = Humans.at(i)->GoToPos();
 
-            {
+            //Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '-'; //To make prev step look empty
+           // cout << Humans.at(i)->getCurrentPos().getX() << " " << Humans.at(i)->getCurrentPos().getY() << "current pos" << endl;
+            //cout << Position.getX() << " " << Position.getY() << "dest pos" << endl;
+            //cout << BFS(Humans.at(i)->getCurrentPos(), Position).getX() << " bfs " << BFS(Humans.at(i)->getCurrentPos(), Position).getY() << endl;
 
-
-                Point Position = Humans.at(i)->GoToPos();
-
-                //Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '-'; //To make prev step look empty
-               // cout << Humans.at(i)->getCurrentPos().getX() << " " << Humans.at(i)->getCurrentPos().getY() << "current pos" << endl;
-                //cout << Position.getX() << " " << Position.getY() << "dest pos" << endl;
-                //cout << BFS(Humans.at(i)->getCurrentPos(), Position).getX() << " bfs " << BFS(Humans.at(i)->getCurrentPos(), Position).getY() << endl;
-
-                Point pos = OneStep(Humans.at(i)->getCurrentPos(), Position);
-                //cout << pos.getX()<<" " << pos.getY() << endl;
-                Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '-'; //To show movement of Human
-                Humans.at(i)->setCurrentPos(Point(pos.getX(), pos.getY()));
-                Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '+'; //To show movement of Human
-                retainOfficeHouse();
+            Point pos = OneStep(Humans.at(i)->getCurrentPos(), Position);
+            //cout << pos.getX()<<" " << pos.getY() << endl;
+            Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '-'; //To show movement of Human
+            Humans.at(i)->setCurrentPos(Point(pos.getX(), pos.getY()));
+            Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '+'; //To show movement of Human
+            retainOfficeHouse();
+        }
+            for (int k = 0; k < H_num; k++)
+            { 
+                bool checker = false;
+                checker=InContact(*Humans.at(k));
+                if (checker == true)
+                {
+                    cout << "effected human at i:" << Humans.at(k)->getCurrentPos().getX() << "and j:" << Humans.at(k)->getCurrentPos().getY() << endl;
+                }
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(2));
+            
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
             system("cls");
             DisplayHabitat();
-
-
-
-        }
-        // cout << endl;
-        // DisplayHabitat();
-        // cout << endl;
     }
 }
 
@@ -323,10 +320,200 @@ void Habitat::setHumans(vector<Human*> Humans)
     this->Humans = Humans;
 }
 
-/*bool Habitat::InContact(Point obj){      // Functions check if Human contacted a virus and also if he/she got effected
-    if (Grid2D[obj.getX()][obj.getY()])
-    {
+bool Habitat::InContact(Human obj){      // Functions check if Human contacted a virus and also if he/she got effected
 
+    int i = obj.getCurrentPos().getX();
+    int j = obj.getCurrentPos().getY();
+    if (i == 0 and j == 0) // top left corner
+    {
+        if (Grid2D[i + 1][j] == '+'
+            or Grid2D[i][j + 1] == '+'
+            or Grid2D[i + 1][j + 1] == '+'
+            or 
+            Grid2D[i + 1][j] == 'H'
+            or Grid2D[i][j + 1] == 'H'
+            or Grid2D[i + 1][j + 1] == 'H')
+
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+            return false;
+        }return false;
+    }
+    if (i == 0 and j == N_size - 1)    // top right corner
+    {
+        if (Grid2D[i + 1][j] == '+'
+            or Grid2D[i][j - 1] == '+'
+            or Grid2D[i + 1][j - 1] == '+'
+            or 
+            Grid2D[i + 1][j] == 'H'
+            or Grid2D[i][j - 1] == 'H'
+            or Grid2D[i + 1][j - 1] == 'H')
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+
+            return false;
+        }return false;
+    }
+    if (i == N_size - 1 and j == 0)    // bottom left corner
+    {
+        if (Grid2D[i - 1][j] == '+'
+            or Grid2D[i][j + 1] == '+'
+            or Grid2D[i - 1][j + 1] == '+'
+            or
+            Grid2D[i - 1][j] == 'H'
+            or Grid2D[i][j + 1] == 'H'
+            or Grid2D[i - 1][j + 1] == 'H'
+            )
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+
+            return false;
+        }return false;
+    }
+    if (i == N_size - 1 and j == N_size - 1)    // bottom right corner
+    {
+        if (Grid2D[i - 1][j] == '+'
+            or Grid2D[i][j - 1] == '+'
+            or Grid2D[i - 1][j - 1] == '+'
+            or
+            Grid2D[i - 1][j] == 'H'
+            or Grid2D[i][j - 1] == 'H'
+            or Grid2D[i - 1][j - 1] == 'H')
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+
+            return false;
+        }return false;
     }
 
-}*/
+    if (j == 0) {    //  if on left x boundary
+        if (Grid2D[i + 1][j] == '+'
+            or Grid2D[i - 1][j] == '+'
+            or Grid2D[i][j + 1] == '+'
+            or Grid2D[i + 1][j + 1] == '+'
+            or Grid2D[i - 1][j + 1] == '+'
+            or
+            Grid2D[i + 1][j] == 'H'
+            or Grid2D[i - 1][j] == 'H'
+            or Grid2D[i][j + 1] == 'H'
+            or Grid2D[i + 1][j + 1] == 'H'
+            or Grid2D[i - 1][j + 1] == 'H')
+
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+
+            return false;
+        }return false;
+    }
+
+    if (j == N_size - 1) {    //  if on right x boundary
+        if (Grid2D[i - 1][j] == '+'
+            or Grid2D[i + 1][j] == '+'
+            or Grid2D[i][j - 1] == '+'
+            or Grid2D[i - 1][j - 1] == '+'
+            or Grid2D[i + 1][j - 1] == '+'
+            or
+            Grid2D[i - 1][j] == 'H'
+            or Grid2D[i + 1][j] == 'H'
+            or Grid2D[i][j - 1] == 'H'
+            or Grid2D[i - 1][j - 1] == 'H'
+            or Grid2D[i + 1][j - 1] == 'H')
+
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+
+            return false;
+        }return false;
+    }
+    if (i == 0) {    //  if on upper y boundary
+        if (Grid2D[i + 1][j] == '+'
+            or Grid2D[i][j + 1] == '+'
+            or Grid2D[i][j - 1] == '+'
+            or Grid2D[i + 1][j + 1] == '+'
+            or Grid2D[i + 1][j - 1] == '+'
+            or  
+            Grid2D[i + 1][j] == 'H'
+            or Grid2D[i][j + 1] == 'H'
+            or Grid2D[i][j - 1] == 'H'
+            or Grid2D[i + 1][j + 1] == 'H'
+            or Grid2D[i + 1][j - 1] == 'H'
+            )
+
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+
+            return false;
+        }return false;
+    }
+    if (i == N_size - 1) {    //  if on lower y boundary
+        if (Grid2D[i - 1][j] == '+'
+            or Grid2D[i][j + 1] == '+'
+            or Grid2D[i][j - 1] == '+'
+            or Grid2D[i - 1][j + 1] == '+'
+            or Grid2D[i - 1][j - 1] == '+')
+
+        {
+            if (IsEffected(1 - obj.getImmunityLevel())) {
+                obj.setHasVirus(true);
+                return true;
+            }
+
+            return false;
+        }return false;
+    }
+    // all 8 condtions check for a human not on boundaries
+        if (Grid2D[i][j + 1] == '+'
+        or Grid2D[i][j - 1] == '+'
+        or Grid2D[i + 1][j] == '+'
+        or Grid2D[i - 1][j] == '+'
+        or Grid2D[i + 1][j + 1] == '+'
+        or Grid2D[i - 1][j - 1] == '+'
+        or Grid2D[i - 1][j + 1] == '+'
+        or Grid2D[i + 1][j - 1] == '+'
+        or
+            Grid2D[i][j + 1] == 'H'
+            or Grid2D[i][j - 1] == 'H'
+            or Grid2D[i + 1][j] == 'H'
+            or Grid2D[i - 1][j] == 'H'
+            or Grid2D[i + 1][j + 1] == 'H'
+            or Grid2D[i - 1][j - 1] == 'H'
+            or Grid2D[i - 1][j + 1] == 'H'
+            or Grid2D[i + 1][j - 1] == 'H'
+            )
+    {
+        if (IsEffected(1 - obj.getImmunityLevel())) {
+            obj.setHasVirus(true);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    return false;
+    
+
+
+
+}
