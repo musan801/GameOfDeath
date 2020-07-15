@@ -11,6 +11,7 @@ class Office
 
 public:
     Office();
+    Office(string name, int x, int y);
     string getName() const;
     void setName(string Name);
 

@@ -3,5 +3,8 @@
 class NonWorkingHuman :            // Class made for the sake of expandability
     public Human
 {
-
+    Point getInitialPos() {
+      
+        return InitialPos;
+    }
 };

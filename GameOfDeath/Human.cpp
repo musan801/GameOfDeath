@@ -1,9 +1,27 @@
 #include "Human.h"
 
-bool Human::isInContact()
+Human::Human()
 {
-    return false;
+    string Name;
+    ImmunityLevel=(rand()%(100))/100; // initial immunity is Random
+    CurrentPos=Point(0,0);
+    InitialPos = Point(0, 0);
+    if ((rand() % (100)) < 30)   // 30% of the people will have the virus
+        HasVirus = 0;
+    else
+        HasVirus = 1;
+    isHome = false;
+
 }
+
+
+
+void Human::setInitialPos(int x,int y)
+{
+    InitialPos.setX(x);
+    InitialPos.setY(y);
+}
+
 
 string Human::getName() const
 {
@@ -44,3 +62,24 @@ void Human::setInitialPos(Point InitialPos)
 {
     this->InitialPos = InitialPos;
 }
+
+bool Human::getHasVirus() const
+{
+    return HasVirus;
+}
+
+void Human::setHasVirus(bool HasVirus)
+{
+    this->HasVirus = HasVirus;
+}
+
+bool Human::getIsHome() const
+{
+    return isHome;
+}
+
+void Human::setIsHome(bool isHome)
+{
+    this->isHome = isHome;
+}
+
