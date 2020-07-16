@@ -5,13 +5,13 @@ using namespace std;
 class Human
 {
 protected:
-    string Name;
-    float ImmunityLevel;
-    Point CurrentPos;
-    Point InitialPos;
-    bool HasVirus;
-    bool isHome;
-    int RecoveryTime;
+    string Name; //Name
+    float ImmunityLevel;  //How immune a person is
+    Point CurrentPos; // curent position
+    Point InitialPos; // Initial position
+    bool HasVirus; // if the person has the virus or not
+    bool isHome; // if the person is home or not
+    int RecoveryTime; // time needed to recover
 
 public:
 

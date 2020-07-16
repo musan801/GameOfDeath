@@ -134,6 +134,8 @@ void Habitat::Generations(int a, int t)
                     if (Humans.at(k)->getRecoveryTime() == 0)
                     {
                         Humans.at(k)->setRecoveryTime(t);
+                       if ( Humans.at(k)->getImmunityLevel() <1)
+                           Humans.at(k)->setImmunityLevel(Humans.at(k)->getImmunityLevel() + 0.1);
                     }
 
                     if (Humans.at(k)->getRecoveryTime() > 0)

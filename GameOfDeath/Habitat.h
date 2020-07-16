@@ -3,20 +3,6 @@
 #include <stack>
 #include <vector>
 #include "Office.h"
-struct Direction {
-    int X;
-    int Y;
-    int Dist;
-    Direction(int x, int y, int w)
-        : X(x), Y(y), Dist(w)
-    {
-    }
-    bool operator==(Direction& x) {
-        return Dist == x.Dist;
-        X = x.X;
-        Y = x.Y;
-    }
-};
 class Habitat {
     int N_size; // size of habitat is n x n, range 0 < n <= 1000000.
     int H_num; // number  of humans, range 1 < h <= 1000000.
@@ -43,23 +29,20 @@ public:
     char** getGrid2D() const;
     void setGrid2D(char** Grid2D);
 
-    bool IsEffected(float immunity);
+    bool IsEffected(float immunity); // Generates possibility of catching the virus 
 
     Office* getOffices() const;
     void setOffices(Office* Offices);
 
 
-    void Initialize(int n_temp, int h_temp, int o_temp);
-   // void Generations();
-    //Point OneStep(int i, int j, int di, int dj);
-    Point OneStep(Point src, Point dest);
-   //Point OneStep(Point src, Point dest, bool& alt, bool& changealt);
+    void Initialize(int n_temp, int h_temp, int o_temp); // Generates an environment
    
-    //Point BFS(Point src, Point dest);
-    void DisplayHabitat();
-    void retainOfficeHouse();
+    Point OneStep(Point src, Point dest); // Tells the human about the  next step towards the destination
+   
+    void DisplayHabitat(); // Displays Habitat
+    void retainOfficeHouse();  // To Help The grid avoid showing trails and also shows where the human is.
 
-    void Generations(int a,int t);
+    void Generations(int a,int t);  // Runs a generation with t number of ticks
 
 public:
     vector<Human*> getHumans() const;

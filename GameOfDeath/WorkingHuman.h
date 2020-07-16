@@ -4,7 +4,7 @@
 class WorkingHuman :
     public Human
 {
-    Office* MyOffice;// whnne init 
+    Office* MyOffice;// when init 
 
 public:
     WorkingHuman() {}
@@ -23,7 +23,6 @@ public:
     void setMyOffice(Office* MyOffice);
     Point GoToPos();
     Point getInitialPos() {
-       // cout << "MUSA" << InitialPos.getX() << endl;
         return InitialPos;
     }
 
