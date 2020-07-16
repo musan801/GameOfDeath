@@ -59,7 +59,7 @@ public:
     void DisplayHabitat();
     void retainOfficeHouse();
 
-    void Generations(int a);
+    void Generations(int a,int t);
 
 public:
     vector<Human*> getHumans() const;

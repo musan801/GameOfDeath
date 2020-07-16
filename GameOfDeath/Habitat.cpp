@@ -42,10 +42,8 @@ void Habitat::Initialize(int n_temp, int h_temp, int o_temp)
     }
     // This loop Spawns Humans and Offices and also maps them on the Grid
     srand((unsigned)time(NULL));
-    while (h_temp != 0) {
-      //  DisplayHabitat();
-      //  cout << endl;
-            if (o_temp != 0) 
+    while (h_temp >= 0) {
+            if (o_temp >= 0) 
             {
                // Offices
                 o_temp--;
@@ -67,8 +65,10 @@ void Habitat::Initialize(int n_temp, int h_temp, int o_temp)
                     
                 }
                 else
-                    goto FindUninitialized;
-            }
+                    goto FindUninitialized;    //Just used for  the sake of learning
+                //i know this is not considered a good solution but if used right, it can do miracles
+               
+            } 
             else 
             {
                 NonWorkingHuman* obj = new NonWorkingHuman();
@@ -88,18 +88,7 @@ void Habitat::Initialize(int n_temp, int h_temp, int o_temp)
                 else 
                     goto  FindUninitialized1;
             }
-        }
-   /* for (int i = 0; i < Humans.size(); i++) {
-         cout<<Humans.at(i)->getInitialPos().getX()<< ' ';
-         cout << Humans.at(i)->getInitialPos().getX() << ' ';
-    }
-    for (int i = 0; i < O_num; i++)
-    {
-         Point temp= Offices[i].getPos();
-         cout << endl<<temp.getX() << " "<<temp.getY()<<"Point"<<endl;
-
-    }*/
-    
+        }   
 }
 
 void Habitat::retainOfficeHouse() {
@@ -119,8 +108,9 @@ void Habitat::retainOfficeHouse() {
     }
 }
 
-void Habitat::Generations(int a)
+void Habitat::Generations(int a, int t)
 {
+    
     for (int j = 0; j < a; j++)
     {
         for (int i = 0; i < O_num; i++)
@@ -128,13 +118,7 @@ void Habitat::Generations(int a)
 
             Point Position = Humans.at(i)->GoToPos();
 
-            //Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '-'; //To make prev step look empty
-           // cout << Humans.at(i)->getCurrentPos().getX() << " " << Humans.at(i)->getCurrentPos().getY() << "current pos" << endl;
-            //cout << Position.getX() << " " << Position.getY() << "dest pos" << endl;
-            //cout << BFS(Humans.at(i)->getCurrentPos(), Position).getX() << " bfs " << BFS(Humans.at(i)->getCurrentPos(), Position).getY() << endl;
-
             Point pos = OneStep(Humans.at(i)->getCurrentPos(), Position);
-            //cout << pos.getX()<<" " << pos.getY() << endl;
             Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '-'; //To show movement of Human
             Humans.at(i)->setCurrentPos(Point(pos.getX(), pos.getY()));
             Grid2D[Humans.at(i)->getCurrentPos().getX()][Humans.at(i)->getCurrentPos().getY()] = '+'; //To show movement of Human
@@ -147,9 +131,21 @@ void Habitat::Generations(int a)
                 if (checker == true)
                 {
                     cout << "effected human at i:" << Humans.at(k)->getCurrentPos().getX() << "and j:" << Humans.at(k)->getCurrentPos().getY() << endl;
+                    if (Humans.at(k)->getRecoveryTime() == 0)
+                    {
+                        Humans.at(k)->setRecoveryTime(t);
+                    }
+
+                    if (Humans.at(k)->getRecoveryTime() > 0)
+                    {
+                        Humans.at(k)->setRecoveryTime(Humans.at(k)->getRecoveryTime() - 1);
+                    }
+                    cout << "ticks left :" << Humans.at(k)->getRecoveryTime() << endl;
                 }
-            }
-            
+
+
+
+            }            
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
             system("cls");
             DisplayHabitat();
@@ -163,7 +159,7 @@ Point Habitat::OneStep(Point src,Point dest )
     int source_j=src.getY();
    int dest_i=dest.getX();
     int  dest_j=dest.getY();
-   
+    //DisplayHabitat();
     if (source_i < dest_i) /////// DOWN
     {
         if (Grid2D[source_i+1][source_j] != '-') { // down Obstacle
@@ -322,6 +318,7 @@ void Habitat::setHumans(vector<Human*> Humans)
 
 bool Habitat::InContact(Human obj){      // Functions check if Human contacted a virus and also if he/she got effected
 
+    //DisplayHabitat();
     int i = obj.getCurrentPos().getX();
     int j = obj.getCurrentPos().getY();
     if (i == 0 and j == 0) // top left corner

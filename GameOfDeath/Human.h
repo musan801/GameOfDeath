@@ -11,14 +11,14 @@ protected:
     Point InitialPos;
     bool HasVirus;
     bool isHome;
-
-    
-
-    
+    int RecoveryTime;
 
 public:
+
+    int  getRecoveryTime() const;
+    void setRecoveryTime(int t);
     Human();
-    bool isInContact(); //Funtion for checking if Human is in contact with any other human
+   
     virtual Point GoToPos() {
 
         return CurrentPos;

@@ -9,6 +9,7 @@ int  main() {
 	int HumanPopulation;
 	int WorkingPeopleSize;
 	int GenSize;
+	int Ticks;
 
 	cout << "Please enter Size of Habitat:"<<endl;
 	cin >> HabitatSize;
@@ -19,9 +20,12 @@ int  main() {
 
 	MyHabitat.Initialize(HabitatSize,HumanPopulation, WorkingPeopleSize); 
 
-	cout <<"Enter number  of ticks"<<endl;
+	cout <<"Enter number  of Gens: " <<endl;
 	cin >> GenSize;
-    MyHabitat.Generations(GenSize);
+
+	cout << "Enter number  of ticks of Recovery:" << endl;
+	cin >> Ticks;
+    MyHabitat.Generations(GenSize,Ticks);
 	/*for (int i = 0; i < 10; i++)
 		cout<<MyHabitat.getHumans().at(i)->getHasVirus()<<" ";
 	return 0;

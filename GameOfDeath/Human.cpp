@@ -1,5 +1,7 @@
 #include "Human.h"
 
+
+
 Human::Human()
 {
     string Name;
@@ -11,10 +13,19 @@ Human::Human()
     else
         HasVirus = 1;
     isHome = false;
+    RecoveryTime = 0;
 
 }
 
+int Human::getRecoveryTime() const
+{
+    return RecoveryTime;
+}
 
+void Human::setRecoveryTime(int t)
+{
+    RecoveryTime = t;
+}
 
 void Human::setInitialPos(int x,int y)
 {
